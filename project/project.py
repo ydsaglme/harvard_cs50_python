@@ -30,22 +30,22 @@ class stock_analyzer:
         self.period_entry.grid(row = 0, column = 1)
 
         # Requesting the number of companies
-        tk.Label(master, text="Number of Companies (2-4):").grid(row=1, column=0)
+        tk.Label(master, text = "Enter the number of companies that you want to analyze:").grid(row = 1, column = 0)
         self.num_companies_entry = tk.Entry(master)
-        self.num_companies_entry.grid(row=1, column=1)
+        self.num_companies_entry.grid(row = 1, column = 1)
 
         # Requesting the company tickers
-        tk.Label(master, text="Enter Tickers (comma-separated):").grid(row=2, column=0)
+        tk.Label(master, text = "Enter Tickers (comma-separated):").grid(row = 2, column = 0)
         self.tickers_entry = tk.Entry(master)
-        self.tickers_entry.grid(row=2, column=1)
+        self.tickers_entry.grid(row = 2, column = 1)
 
-        # Analyze Button
-        self.analyze_button = tk.Button(master, text="Analyze", command=self.analyze)
-        self.analyze_button.grid(row=3, column=0, columnspan=2)
+        # Creating the analyze button
+        self.analyze_button = tk.Button(master, text = "Analyze", command = self.analyze)
+        self.analyze_button.grid(row = 3, column = 0, columnspan = 2)
 
-        # Status Message
-        self.status_label = tk.Label(master, text="")
-        self.status_label.grid(row=4, column=0, columnspan=2)
+        # Creating the status message
+        self.status_label = tk.Label(master, text = "")
+        self.status_label.grid(row = 4, column = 0, columnspan = 2)
 
     def analyze(self):
         period = self.period_entry.get().strip()
