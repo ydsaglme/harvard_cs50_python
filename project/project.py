@@ -10,30 +10,31 @@ import tkinter as tk
 from tkinter import messagebox
 
 warnings.filterwarnings("ignore", "use_inf_as_na")
+
+# Suppressing the yfinance errors
 logger = logging.getLogger("yfinance")
 logger.disabled = True
 logger.propagate = False
+pd.reset_option("all", silent = True)
 
-pd.reset_option("all", silent=True)
-
-class StockAnalyzerApp:
+class stock_analyzer:
     def __init__(self, master):
         self.master = master
         self.master.title("Stock Analyzer")
-        
-        self.period_list = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
-        
-        # Time Period
-        tk.Label(master, text="Enter Time Period:").grid(row=0, column=0)
-        self.period_entry = tk.Entry(master)
-        self.period_entry.grid(row=0, column=1)
 
-        # Number of Companies
+        self.period_list = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
+
+        # Requesting the time period
+        tk.Label(master, text = "Enter the time period:").grid(row = 0, column = 0)
+        self.period_entry = tk.Entry(master)
+        self.period_entry.grid(row = 0, column = 1)
+
+        # Requesting the number of companies
         tk.Label(master, text="Number of Companies (2-4):").grid(row=1, column=0)
         self.num_companies_entry = tk.Entry(master)
         self.num_companies_entry.grid(row=1, column=1)
 
-        # Company Tickers
+        # Requesting the company tickers
         tk.Label(master, text="Enter Tickers (comma-separated):").grid(row=2, column=0)
         self.tickers_entry = tk.Entry(master)
         self.tickers_entry.grid(row=2, column=1)
@@ -187,5 +188,5 @@ class StockAnalyzerApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = StockAnalyzerApp(root)
+    app = stock_analyzer(root)
     root.mainloop()
