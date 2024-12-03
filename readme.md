@@ -1,1 +1,1 @@
-# ydsaglme-harvard_cs50_python
+# harvard_cs50_python
