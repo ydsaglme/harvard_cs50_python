@@ -138,52 +138,52 @@ class stock_analyzer:
         combined_data_1 = pd.DataFrame()
         for company in self.company_list:
             historical_data = self.historical_data_dict[company]
-            closing_prices = historical_data[["Close"]].rename(columns={"Close": company})
-            combined_data_1 = combined_data_1.join(closing_prices, how="outer")
-        combined_data_1.reset_index(inplace=True)
+            closing_prices = historical_data[["Close"]].rename(columns = {"Close": company})
+            combined_data_1 = combined_data_1.join(closing_prices, how = "outer")
+        combined_data_1.reset_index(inplace = True)
 
         closing_prices_fig = sns.PairGrid(combined_data_1.dropna())
-        closing_prices_fig.map_lower(sns.kdeplot, cmap="winter")
-        closing_prices_fig.map_upper(plt.scatter, color="blue")
-        closing_prices_fig.map_diag(plt.hist, bins=25, color="blue")
-        plt.suptitle("Comparison of Closing Prices", fontsize=16, y=1.025)
+        closing_prices_fig.map_lower(sns.kdeplot, cmap = "winter")
+        closing_prices_fig.map_upper(plt.scatter, color = "blue")
+        closing_prices_fig.map_diag(plt.hist, bins = 25, color = "blue")
+        plt.suptitle("Comparison of Closing Prices", fontsize = 16, y = 1.025)
         plt.show()
 
         combined_data_2 = pd.DataFrame()
         for company in self.company_list:
             historical_data = self.historical_data_dict[company]
-            daily_returns = historical_data[["Daily Return"]].rename(columns={"Daily Return": company})
-            combined_data_2 = combined_data_2.join(daily_returns, how="outer")
-        combined_data_2.reset_index(inplace=True)
+            daily_returns = historical_data[["Daily Return"]].rename(columns = {"Daily Return": company})
+            combined_data_2 = combined_data_2.join(daily_returns, how = "outer")
+        combined_data_2.reset_index(inplace = True)
 
         daily_returns_fig = sns.PairGrid(combined_data_2.dropna())
-        daily_returns_fig.map_lower(sns.kdeplot, cmap="winter")
-        daily_returns_fig.map_upper(plt.scatter, color="blue")
-        daily_returns_fig.map_diag(plt.hist, bins=25, color="blue")
-        plt.suptitle("Comparison of Daily Returns", fontsize=16, y=1.025)
+        daily_returns_fig.map_lower(sns.kdeplot, cmap = "winter")
+        daily_returns_fig.map_upper(plt.scatter, color = "blue")
+        daily_returns_fig.map_diag(plt.hist, bins = 25, color = "blue")
+        plt.suptitle("Comparison of Daily Returns", fontsize = 16, y = 1.025)
         plt.show()
 
-        combined_data_1 = combined_data_1.drop("Date", axis=1)
-        combined_data_2 = combined_data_2.drop("Date", axis=1)
-        plt.figure(figsize=(9.5, 9.5))
+        combined_data_1 = combined_data_1.drop("Date", axis = 1)
+        combined_data_2 = combined_data_2.drop("Date", axis = 1)
+        plt.figure(figsize = (9.5, 9.5))
         plt.subplot(2, 2, 1)
-        sns.heatmap(combined_data_1.corr(), annot=True, cmap="winter")
+        sns.heatmap(combined_data_1.corr(), annot = True, cmap = "winter")
         plt.title("Correlation of Closing Prices")
 
         plt.subplot(2, 2, 2)
-        sns.heatmap(combined_data_2.corr(), annot=True, cmap="winter")
+        sns.heatmap(combined_data_2.corr(), annot = True, cmap = "winter")
         plt.title("Correlation of Daily Returns")
 
         combined_data_2 = combined_data_2.dropna()
         area = np.pi * 20
-        plt.figure(figsize=(9.5, 9.5))
-        plt.scatter(combined_data_2.mean(), combined_data_2.std(), s=area)
+        plt.figure(figsize = (9.5, 9.5))
+        plt.scatter(combined_data_2.mean(), combined_data_2.std(), s = area)
         plt.xlabel("Expected Return")
         plt.ylabel("Risk")
         for label, x, y in zip(combined_data_2.columns, combined_data_2.mean(), combined_data_2.std()):
-            plt.annotate(label, xy=(x, y), xytext=(50, 50), textcoords="offset points", 
-                         ha="right", va="bottom", arrowprops=dict(arrowstyle="-", color="blue", 
-                         connectionstyle="arc3, rad=-0.3"))
+            plt.annotate(label, xy = (x, y), xytext = (50, 50), textcoords = "offset points",
+                         ha = "right", va = "bottom", arrowprops = dict(arrowstyle = "-", color = "blue",
+                         connectionstyle = "arc3, rad = -0.3"))
         plt.show()
 
 if __name__ == "__main__":
