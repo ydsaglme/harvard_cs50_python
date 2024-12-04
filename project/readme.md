@@ -1,5 +1,4 @@
 # CS50’s Introduction to Programming with Python
-
 ## Description
 _This project is related with a Python-based application that facilitates the retrieval, analysis, and visualization of historical stock data using the Yahoo Finance API (yfinance). Users begin by entering a stock ticker symbol along with their desired time period for data retrieval. When the user enters an invalid ticker symbol or a time period, the program prompts them with a clear error message and exits the program. On the other hand, it retrieves the relevant historical data and saves it as a CSV file if the inputs are valid._
 
