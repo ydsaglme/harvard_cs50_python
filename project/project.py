@@ -67,7 +67,7 @@ class stock_analyzer:
             messagebox.showerror("Input Error", "Number of tickers does not match the specified number of companies.")
             return
 
-        self.status_label.config(text="Fetching data...")
+        self.status_label.config(text = "Fetching data...")
         self.master.update()
 
         self.company_list = []
@@ -76,7 +76,7 @@ class stock_analyzer:
         for ticker in tickers:
             ticker = ticker.strip().upper()
             try:
-                historical_data = yf.Ticker(ticker).history(period=period)
+                historical_data = yf.Ticker(ticker).history(period = period)
                 if historical_data.empty:
                     raise Exception("Empty data")
                 self.company_list.append(ticker)
@@ -85,19 +85,19 @@ class stock_analyzer:
                 messagebox.showerror("Error", f"Could not fetch data for {ticker}: {str(e)}")
                 return
 
-        self.status_label.config(text="Data fetched successfully!")
+        self.status_label.config(text = "Data fetched successfully!")
         self.basic_plot_generator()
         self.comparison_plot_generator()
 
     def basic_plot_generator(self):
         for company in self.company_list:
             historical_data = self.historical_data_dict[company]
-            fig, axs = plt.subplots(3, 2, figsize=(19, 9.5))
+            fig, axs = plt.subplots(3, 2, figsize = (19, 9.5))
 
-            axs[0, 0].plot(historical_data["Close"], label="Closing Price", color="blue")
-            axs[0, 0].set_title(f"Closing Price of {company}", size=10)
-            axs[0, 0].set_xlabel("Date", size=8)
-            axs[0, 0].set_ylabel("Price (USD)", size=8)
+            axs[0, 0].plot(historical_data["Close"], label = "Closing Price", color = "blue")
+            axs[0, 0].set_title(f"Closing Price of {company}", size = 10)
+            axs[0, 0].set_xlabel("Date", size = 8)
+            axs[0, 0].set_ylabel("Price (USD)", size = 8)
 
             axs[1, 0].plot(historical_data["Volume"], label="Sales Volume", color="blue")
             axs[1, 0].set_title(f"Sales Volume of {company}", size=10)
