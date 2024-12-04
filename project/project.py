@@ -125,7 +125,7 @@ class stock_analyzer:
             axs[1, 1].set_title(f"Closing Price and SMAs for {company}", size = 10)
             axs[1, 1].set_xlabel("Date", size = 8)
             axs[1, 1].set_ylabel("Price (USD)", size = 8)
-            axs[1, 1].legend(fontsize=6, loc = "lower right")
+            axs[1, 1].legend(fontsize = 6, loc = "lower right")
 
             axs[2, 1].hist(historical_data["Daily Return"], bins=25, color="blue")
             axs[2, 1].set_xlabel("Daily Return (%)", size=8)
