@@ -1,5 +1,5 @@
 # CS50’s Introduction to Programming with Python
-![Mountain   Stars](https://github.com/user-attachments/assets/ea49347a-711b-415f-a000-8d2c950c5d86)
+![Mountain   Stars](https://github.com/user-attachments/assets/72d3534c-32a3-4589-b4c8-0374af8e74df)
 
 ## Description
 _This project is related with a Python-based application that facilitates the retrieval, analysis, and visualization of historical stock data using the Yahoo Finance API (yfinance). Users begin by entering a stock ticker symbol along with their desired time period for data retrieval. When the user enters an invalid ticker symbol or a time period, the program prompts them with a clear error message and exits the program. On the other hand, it retrieves the relevant historical data and saves it as a CSV file if the inputs are valid._
