@@ -3,47 +3,39 @@ import logging
 import warnings
 import numpy as np
 import pandas as pd
+import tkinter as tk
 import seaborn as sns
 import yfinance as yf
 import matplotlib.pyplot as plt
-import tkinter as tk
 from tkinter import messagebox
 
 warnings.filterwarnings("ignore", "use_inf_as_na")
-
-# Suppressing the yfinance errors
 logger = logging.getLogger("yfinance")
 logger.disabled = True
 logger.propagate = False
 pd.reset_option("all", silent = True)
 
-class stock_analyzer:
+class graphite:
     def __init__(self, master):
         self.master = master
-        self.master.title("Stock Analyzer")
-
+        self.master.title("Graphite")
         self.period_list = ["1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max"]
 
-        # Requesting the time period
-        tk.Label(master, text = "Enter the time period:").grid(row = 0, column = 0)
+        tk.Label(master, anchor = "w", text = "Enter the time period:").grid(row = 0, column = 0, sticky = "w")
         self.period_entry = tk.Entry(master)
         self.period_entry.grid(row = 0, column = 1)
 
-        # Requesting the number of companies
-        tk.Label(master, text = "Enter the number of companies that you want to analyze:").grid(row = 1, column = 0)
+        tk.Label(master, anchor = "w", text = "Enter the number of companies:").grid(row = 1, column = 0, sticky = "w")
         self.num_companies_entry = tk.Entry(master)
         self.num_companies_entry.grid(row = 1, column = 1)
 
-        # Requesting the company tickers
-        tk.Label(master, text = "Enter Tickers (comma-separated):").grid(row = 2, column = 0)
+        tk.Label(master, anchor = "w", text = "Enter the tickers (Separate them with commas):").grid(row = 2, column = 0, sticky = "w")
         self.tickers_entry = tk.Entry(master)
         self.tickers_entry.grid(row = 2, column = 1)
 
-        # Creating the analyze button
         self.analyze_button = tk.Button(master, text = "Analyze", command = self.analyze)
         self.analyze_button.grid(row = 3, column = 0, columnspan = 2)
 
-        # Creating the status message
         self.status_label = tk.Label(master, text = "")
         self.status_label.grid(row = 4, column = 0, columnspan = 2)
 
@@ -53,18 +45,24 @@ class stock_analyzer:
         tickers = self.tickers_entry.get().strip().split(',')
 
         if period not in self.period_list:
-            messagebox.showerror("Input Error", "Please enter a valid time period.")
+            messagebox.showerror("Input Error", "Please enter a valid time period!")
             return
+
         try:
-            num_companies = int(num_companies)
-            if num_companies < 2 or num_companies > 4:
+            if int(num_companies) == False:
                 raise ValueError
         except ValueError:
-            messagebox.showerror("Input Error", "Please enter a number between 2 and 4 for companies.")
+            messagebox.showerror("Input Error", "Please enter a number!")
+            return
+
+        num_companies = int(num_companies)
+
+        if num_companies < 2 or num_companies > 4:
+            messagebox.showerror("Input Error", "Please enter a number between 2 and 4!")
             return
 
         if len(tickers) != num_companies:
-            messagebox.showerror("Input Error", "Number of tickers does not match the specified number of companies.")
+            messagebox.showerror("Input Error", "Number of tickers does not match the specified number of companies!")
             return
 
         self.status_label.config(text = "Fetching data...")
@@ -78,11 +76,11 @@ class stock_analyzer:
             try:
                 historical_data = yf.Ticker(ticker).history(period = period)
                 if historical_data.empty:
-                    raise Exception("Empty data")
+                    raise Exception
                 self.company_list.append(ticker)
                 self.historical_data_dict[ticker] = historical_data
-            except Exception as e:
-                messagebox.showerror("Error", f"Could not fetch data for {ticker}: {str(e)}")
+            except Exception:
+                messagebox.showerror("Input Error", f"Could not fetch data for {ticker}!")
                 return
 
         self.status_label.config(text = "Data fetched successfully!")
@@ -95,12 +93,12 @@ class stock_analyzer:
             fig, axs = plt.subplots(3, 2, figsize = (19, 9.5))
 
             axs[0, 0].plot(historical_data["Close"], label = "Closing Price", color = "blue")
-            axs[0, 0].set_title(f"Closing Price of {company}", size = 10)
+            axs[0, 0].set_title(f"Closing Prices of {company}", size = 10)
             axs[0, 0].set_xlabel("Date", size = 8)
             axs[0, 0].set_ylabel("Price (USD)", size = 8)
 
             axs[1, 0].plot(historical_data["Volume"], label = "Sales Volume", color = "blue")
-            axs[1, 0].set_title(f"Sales Volume of {company}", size = 10)
+            axs[1, 0].set_title(f"Sales Volumes of {company}", size = 10)
             axs[1, 0].set_xlabel("Date", size = 8)
             axs[1, 0].set_ylabel("Volume", size = 8)
 
@@ -112,24 +110,23 @@ class stock_analyzer:
 
             axs[0, 1].hist(historical_data["Close"], bins = 25, color = "blue")
             axs[0, 1].set_xlabel("Price (USD)", size = 8)
-            axs[0, 1].set_ylabel("Counts", size = 8)
+            axs[0, 1].set_ylabel("Count", size = 8)
 
             sma_days = [10, 20, 30]
             for sma in sma_days:
                 historical_data[f"{sma}-day SMA"] = historical_data["Close"].rolling(sma).mean()
-
             axs[1, 1].plot(historical_data["Close"], label = "Closing Price", color = "blue")
             axs[1, 1].plot(historical_data[f"{sma_days[0]}-day SMA"], label = "10-day SMA", color = "red")
             axs[1, 1].plot(historical_data[f"{sma_days[1]}-day SMA"], label = "20-day SMA", color = "green")
             axs[1, 1].plot(historical_data[f"{sma_days[2]}-day SMA"], label = "30-day SMA", color = "orange")
-            axs[1, 1].set_title(f"Closing Price and SMAs for {company}", size = 10)
+            axs[1, 1].set_title(f"Closing Prices and SMAs for {company}", size = 10)
             axs[1, 1].set_xlabel("Date", size = 8)
             axs[1, 1].set_ylabel("Price (USD)", size = 8)
             axs[1, 1].legend(fontsize = 6, loc = "lower right")
 
             axs[2, 1].hist(historical_data["Daily Return"], bins = 25, color = "blue")
             axs[2, 1].set_xlabel("Daily Return (%)", size = 8)
-            axs[2, 1].set_ylabel("Counts", size = 8)
+            axs[2, 1].set_ylabel("Count", size = 8)
 
             plt.tight_layout()
             plt.show()
@@ -181,12 +178,10 @@ class stock_analyzer:
         plt.xlabel("Expected Return")
         plt.ylabel("Risk")
         for label, x, y in zip(combined_data_2.columns, combined_data_2.mean(), combined_data_2.std()):
-            plt.annotate(label, xy = (x, y), xytext = (50, 50), textcoords = "offset points",
-                         ha = "right", va = "bottom", arrowprops = dict(arrowstyle = "-", color = "blue",
-                         connectionstyle = "arc3, rad = -0.3"))
+            plt.annotate(label, xy = (x, y), xytext = (50, 50), textcoords = "offset points", ha = "right", va = "bottom", arrowprops = dict(arrowstyle = "-", color = "blue", connectionstyle = "arc3, rad = -0.3"))
         plt.show()
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = stock_analyzer(root)
+    app = graphite(root)
     root.mainloop()
