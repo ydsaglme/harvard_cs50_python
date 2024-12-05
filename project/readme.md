@@ -27,7 +27,3 @@ CS50’s Introduction to Programming with Python
 Enter the ticker of the company: SHEL
 Enter the time period: 1y
 ```
-
-<p align="center">
-  <img width="600" height="583" src="https://github.com/user-attachments/assets/1c51021e-57da-4af8-b8e7-e6fe2a4dd534" alt="harvard">
-</p>
